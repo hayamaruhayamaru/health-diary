@@ -1,0 +1,234 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --bg: #F4F1EA;
+  --surface: #FBFAF6;
+  --ink: #1B1B1A;
+  --muted: #6E6B63;
+  --line: #D9D4C7;
+  --accent: #9A3B2E;
+  --accent-soft: #E9DBD5;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Zen Kaku Gothic New', 'Inter Tight', system-ui, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'palt';
+  letter-spacing: 0.01em;
+}
+
+/* ---- subtle paper grain ---- */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(155,130,80,0.05), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(100,120,90,0.04), transparent 40%);
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.045 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  z-index: 0;
+}
+
+#root { position: relative; z-index: 1; }
+
+/* ---- typography primitives ---- */
+.display { font-family: 'Instrument Serif', 'Zen Old Mincho', serif; font-weight: 400; letter-spacing: -0.01em; }
+.mincho  { font-family: 'Zen Old Mincho', serif; }
+.mono    { font-family: 'JetBrains Mono', ui-monospace, monospace; font-feature-settings: 'tnum'; }
+
+.eyebrow {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* ---- hairline card ---- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.hair { border-color: var(--line); }
+.hair-b { border-bottom: 1px solid var(--line); }
+.hair-t { border-top: 1px solid var(--line); }
+.hair-r { border-right: 1px solid var(--line); }
+
+/* ---- form inputs ---- */
+input[type="text"], input[type="number"], input[type="date"], input[type="time"], textarea, select {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  padding: 6px 2px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 180ms;
+  width: 100%;
+}
+input:focus, textarea:focus, select:focus { border-bottom-color: var(--accent); }
+textarea { resize: vertical; min-height: 80px; }
+
+/* ---- buttons ---- */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 18px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  transition: background 160ms, color 160ms, transform 160ms;
+}
+.btn:hover { background: transparent; color: var(--ink); }
+.btn-ghost {
+  background: transparent; color: var(--ink);
+}
+.btn-ghost:hover { background: var(--ink); color: var(--surface); }
+.btn-accent { border-color: var(--accent); background: var(--accent); }
+.btn-accent:hover { background: transparent; color: var(--accent); }
+
+/* ---- checkbox (custom) ---- */
+.chk {
+  appearance: none;
+  width: 18px; height: 18px;
+  border: 1px solid var(--ink);
+  background: transparent;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.chk:checked { background: var(--ink); }
+.chk:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px; top: 0px;
+  width: 6px; height: 11px;
+  border: solid var(--surface);
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+
+/* ---- range slider ---- */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 1px;
+  background: var(--line);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: -7px;
+  cursor: pointer;
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+/* ---- staggered entrance ---- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rise { animation: rise 700ms cubic-bezier(.2,.6,.2,1) both; }
+.rise-1 { animation-delay: 60ms; }
+.rise-2 { animation-delay: 140ms; }
+.rise-3 { animation-delay: 220ms; }
+.rise-4 { animation-delay: 300ms; }
+
+@keyframes inkDraw {
+  from { stroke-dashoffset: 1000; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* ---- tab indicator ---- */
+.tab {
+  position: relative;
+  padding: 6px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 200ms;
+}
+.tab:hover { color: var(--ink); }
+.tab.active { color: var(--ink); }
+.tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* scrollbar soft */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: var(--line); }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* print page for PDF capture */
+.print-page {
+  width: 794px;
+  background: #fff;
+  color: #111;
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+}
+
+/* date input shown as icon only (used in Chapter · I) */
+.date-icon-only {
+  width: 32px !important;
+  padding: 4px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: transparent !important;
+  cursor: pointer;
+}
+.date-icon-only::-webkit-datetime-edit,
+.date-icon-only::-webkit-datetime-edit-fields-wrapper,
+.date-icon-only::-webkit-datetime-edit-text,
+.date-icon-only::-webkit-datetime-edit-month-field,
+.date-icon-only::-webkit-datetime-edit-day-field,
+.date-icon-only::-webkit-datetime-edit-year-field {
+  display: none;
+}
+.date-icon-only::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  margin: 0;
+}
+.date-icon-only::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}

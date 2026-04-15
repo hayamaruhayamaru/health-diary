@@ -1,0 +1,3 @@
+ターミナルで以下実行
+cd .\health-diary\
+npm run dev 
