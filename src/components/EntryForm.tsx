@@ -225,10 +225,6 @@ export default function EntryForm({ date, setDate }: Props) {
           <ol className="mincho text-[13px] leading-relaxed text-muted list-decimal pl-5 space-y-1">
             <li>一日の症状程度、服薬時間、気づいたことを記録する。</li>
             <li>先生との診察時に記録した内容を共有する。</li>
-            <li>先生とちんぽを共有する。</li>
-            <li>先生とふんじんを共有する。</li>
-            <li>先生とドアロックを共有する。</li>
-            <li>先生とーーーいい歌だ。ーーーを共有する。</li>
           </ol>
         </div>
 
