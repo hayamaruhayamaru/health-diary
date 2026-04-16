@@ -232,3 +232,20 @@ input[type="range"]::-webkit-slider-thumb {
 .date-icon-only::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
 }
+
+/* medication table — horizontal scroll on narrow screens */
+.med-table-wrap {
+  overflow-x: auto;
+}
+.med-table-row {
+  min-width: 500px;
+}
+
+/* medication action column — vertical text on narrow screens */
+@media (max-width: 1023px) {
+  .med-action-label {
+    writing-mode: vertical-rl;
+    text-align: center;
+    line-height: 1;
+  }
+}
