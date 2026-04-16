@@ -96,9 +96,46 @@ function rowsToEntries(rows: Record<string, unknown>[]): ImportResult {
 export async function importExcelOrCSV(file: File): Promise<ImportResult> {
   const buf = await file.arrayBuffer()
   const wb = XLSX.read(buf, { type: 'array', cellDates: true })
-  const ws = wb.Sheets[wb.SheetNames[0]]
-  const rows = XLSX.utils.sheet_to_json(ws, { raw: false, defval: '' }) as Record<string, unknown>[]
-  return rowsToEntries(rows)
+
+  // Read all sheets and merge rows by date
+  const allRows: Record<string, unknown>[] = []
+  if (wb.SheetNames.length <= 1) {
+    const ws = wb.Sheets[wb.SheetNames[0]]
+    allRows.push(...(XLSX.utils.sheet_to_json(ws, { raw: false, defval: '' }) as Record<string, unknown>[]))
+  } else {
+    // Multiple sheets: merge rows sharing the same date
+    const byDate = new Map<string, Record<string, unknown>>()
+    for (const name of wb.SheetNames) {
+      const ws = wb.Sheets[name]
+      const rows = XLSX.utils.sheet_to_json(ws, { raw: false, defval: '' }) as Record<string, unknown>[]
+      for (const row of rows) {
+        const dateRaw = row['日付'] ?? row['date'] ?? row['Date'] ?? row['DATE']
+        const dateKey = String(dateRaw ?? '')
+        if (!dateKey) continue
+        const existing = byDate.get(dateKey)
+        if (existing) {
+          // Merge columns (later sheet values don't overwrite non-empty existing values)
+          for (const [k, v] of Object.entries(row)) {
+            if (k === '日付' || k === 'date' || k === 'Date' || k === 'DATE') continue
+            if (v === undefined || v === null || v === '') continue
+            if (existing[k] !== undefined && existing[k] !== null && existing[k] !== '') {
+              // Append to note-like fields
+              if (k === '備考' || k === 'memo' || k === 'note') {
+                existing[k] = `${existing[k]}\n${v}`
+              }
+              continue
+            }
+            existing[k] = v
+          }
+        } else {
+          byDate.set(dateKey, { ...row })
+        }
+      }
+    }
+    allRows.push(...byDate.values())
+  }
+
+  return rowsToEntries(allRows)
 }
 
 /**

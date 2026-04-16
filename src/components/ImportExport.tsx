@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { useDiary, todayStr } from '../store/useDiary'
-import { filterByRange, exportCSV, exportExcel, exportPDF, exportTemplateExcel, exportTemplateCSV } from '../lib/exporters'
+import { filterByRange, exportCSV, exportExcelSplit, exportPDF, exportTemplateSplitExcel, exportTemplateCSV } from '../lib/exporters'
 import { importExcelOrCSV, importText } from '../lib/importers'
 import type { Entry } from '../types'
 
@@ -19,15 +19,15 @@ export default function ImportExport() {
 
   const rangeEntries = filterByRange(state.entries, from, to)
 
-  const doExcel = () => {
-    if (rangeEntries.length === 0) return setStatus('対象期間に記録がありません')
-    exportExcel(rangeEntries, `健康記録_${from}_${to}.xlsx`)
-    setStatus(`Excel 出力 (${rangeEntries.length}日分)`)
-  }
   const doCSV = () => {
     if (rangeEntries.length === 0) return setStatus('対象期間に記録がありません')
     exportCSV(rangeEntries, `健康記録_${from}_${to}.csv`)
     setStatus(`CSV 出力 (${rangeEntries.length}日分)`)
+  }
+  const doExcelSplit = () => {
+    if (rangeEntries.length === 0) return setStatus('対象期間に記録がありません')
+    exportExcelSplit(rangeEntries, `健康記録_シート分割_${from}_${to}.xlsx`)
+    setStatus(`Excel 出力 (${rangeEntries.length}日分)`)
   }
   const doPDF = async () => {
     if (!printRef.current) return
@@ -39,8 +39,8 @@ export default function ImportExport() {
   const doPrint = () => window.print()
 
   const doTemplateExcel = () => {
-    exportTemplateExcel('健康記録_入力フォーマット.xlsx')
-    setImportStatus('入力フォーマット (Excel) をダウンロードしました')
+    exportTemplateSplitExcel('健康記録_入力フォーマット.xlsx')
+    setImportStatus('入力フォーマット (Excel シート分割) をダウンロードしました')
   }
   const doTemplateCSV = () => {
     exportTemplateCSV('健康記録_入力フォーマット.csv')
@@ -108,7 +108,7 @@ export default function ImportExport() {
             選択範囲に含まれる記録: {rangeEntries.length} 日分 <span className="opacity-60">/ 全記録 {Object.keys(state.entries).length} 日分</span>
           </div>
           <div className="flex flex-wrap gap-3">
-            <button className="btn btn-accent" onClick={doExcel}>Excel (.xlsx)</button>
+            <button className="btn btn-accent" onClick={doExcelSplit}>Excel シート分割</button>
             <button className="btn" onClick={doCSV}>CSV</button>
             <button className="btn btn-ghost" onClick={doPDF}>PDF</button>
             <button className="btn btn-ghost" onClick={doPrint}>印刷</button>
@@ -119,7 +119,7 @@ export default function ImportExport() {
         </div>
 
         <div className="mono text-[10px] text-muted tracking-wider2 leading-relaxed">
-          EXCELは「先生共有レイアウト」で症状・服薬・備考を一覧化します。<br/>
+          EXCEL シート分割は「症状記録」と「服薬記録・備考」の2シートで出力します。<br/>
           PDFはブラウザで描画した内容を画像化するため日本語の文字化けはありません。<br/>
           薬列はチェックを入れた服薬のみ出力されます（時刻のカンマ区切り）。<br/>
           チェックなしの服薬や、その日に1度もチェックされなかった薬は「—」で表示されます。
@@ -146,7 +146,7 @@ export default function ImportExport() {
               列名: <span className="text-ink">日付 / 症状名(程度) / 症状名(単位) / 薬:薬名 / 備考</span>
             </div>
             <div className="flex gap-3">
-              <button className="btn btn-ghost" onClick={doTemplateExcel}>Excel テンプレ</button>
+              <button className="btn btn-ghost" onClick={doTemplateExcel}>Excel シート分割テンプレ</button>
               <button className="btn btn-ghost" onClick={doTemplateCSV}>CSV テンプレ</button>
             </div>
           </div>

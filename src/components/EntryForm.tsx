@@ -340,35 +340,35 @@ export default function EntryForm({ date, setDate }: Props) {
         {/* Medications */}
         <div>
           <SectionHead num="iii." title="服薬記録" sub="飲んだらチェック" />
-          <div className="card p-6">
+          <div className="card p-6 med-table-wrap">
             {meds.length === 0 && (
               <div className="mincho text-[13px] text-muted">
                 薬マスタが空です。「03 · 薬」タブから登録できます。
               </div>
             )}
             {meds.length > 0 && (
-              <div className="flex items-center gap-5 hair-b pb-2 mb-1">
-                <div className="eyebrow w-[88px] text-center whitespace-nowrap flex items-center justify-center gap-1">
+              <div className="flex items-center gap-5 hair-b pb-2 mb-1 med-table-row">
+                <div className="eyebrow w-[88px] shrink-0 text-center whitespace-nowrap flex items-center justify-center gap-1">
                   <span>服用</span>
                   <SortArrows onAsc={() => sortMeds('taken', 'asc')} onDesc={() => sortMeds('taken', 'desc')} />
                 </div>
-                <div className="eyebrow flex-1 flex items-center gap-1">
+                <div className="eyebrow flex-1 min-w-0 flex items-center gap-1 whitespace-nowrap">
                   <span>薬名 / 用量</span>
                   <SortArrows onAsc={() => sortMeds('name', 'asc')} onDesc={() => sortMeds('name', 'desc')} />
                 </div>
-                <div className="eyebrow w-[90px] flex items-center gap-1">
+                <div className="eyebrow w-[90px] shrink-0 flex items-center gap-1">
                   <span>時刻</span>
                   <SortArrows onAsc={() => sortMeds('time', 'asc')} onDesc={() => sortMeds('time', 'desc')} />
                 </div>
-                <div className="eyebrow w-[64px] text-center whitespace-nowrap">時刻クリア</div>
-                <div className="eyebrow w-[72px] text-right">状態</div>
-                <div className="w-[40px]" />
+                <div className="eyebrow w-[64px] shrink-0 text-center whitespace-nowrap">時刻クリア</div>
+                <div className="eyebrow w-[72px] shrink-0 text-right">状態</div>
+                <div className="eyebrow w-[40px] shrink-0 text-right med-action-label">操作</div>
               </div>
             )}
             <div className="divide-y divide-[var(--line)]">
               {meds.map((m, i) => (
-                <label key={m.medId + i} className="flex items-center gap-5 py-3 cursor-pointer group">
-                  <div className="w-[88px] flex justify-center">
+                <label key={m.medId + i} className="flex items-center gap-5 py-3 cursor-pointer group med-table-row">
+                  <div className="w-[88px] shrink-0 flex justify-center">
                     <input
                       type="checkbox"
                       className="chk"
@@ -376,15 +376,15 @@ export default function EntryForm({ date, setDate }: Props) {
                       onChange={e => setMeds(prev => prev.map((x, ix) => ix === i ? { ...x, taken: e.target.checked } : x))}
                     />
                   </div>
-                  <div className="flex-1 flex items-baseline gap-4">
-                    <span className={`mincho text-[17px] ${m.taken ? '' : 'text-muted'}`}>{m.name}</span>
-                    {m.dose && <span className="mono text-[11px] text-muted">{m.dose}</span>}
+                  <div className="flex-1 min-w-0 flex items-baseline gap-4">
+                    <span className={`mincho text-[17px] truncate ${m.taken ? '' : 'text-muted'}`}>{m.name}</span>
+                    {m.dose && <span className="mono text-[11px] text-muted shrink-0">{m.dose}</span>}
                   </div>
                   <input
                     type="time"
                     value={m.time ?? ''}
                     onChange={e => setMeds(prev => prev.map((x, ix) => ix === i ? { ...x, time: e.target.value } : x))}
-                    className="!w-[90px] !border-0"
+                    className="!w-[90px] !border-0 shrink-0"
                   />
                   <button
                     type="button"
@@ -410,7 +410,7 @@ export default function EntryForm({ date, setDate }: Props) {
                       setMeds(prev => prev.filter((_, ix) => ix !== i))
                     }}
                     title="この行を削除"
-                    className="mincho text-[12px] text-muted hover:text-accent transition w-[40px] text-right shrink-0"
+                    className="mincho text-[12px] text-muted hover:text-accent transition w-[40px] text-right shrink-0 med-action-label"
                   >
                     削除
                   </button>
