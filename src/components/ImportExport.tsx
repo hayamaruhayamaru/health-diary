@@ -26,7 +26,7 @@ export default function ImportExport() {
   }
   const doExcelSplit = () => {
     if (rangeEntries.length === 0) return setStatus('対象期間に記録がありません')
-    exportExcelSplit(rangeEntries, `健康記録_シート分割_${from}_${to}.xlsx`)
+    exportExcelSplit(rangeEntries, `健康記録_${from}_${to}.xlsx`)
     setStatus(`Excel 出力 (${rangeEntries.length}日分)`)
   }
   const doPDF = async () => {
@@ -40,7 +40,7 @@ export default function ImportExport() {
 
   const doTemplateExcel = () => {
     exportTemplateSplitExcel('健康記録_入力フォーマット.xlsx')
-    setImportStatus('入力フォーマット (Excel シート分割) をダウンロードしました')
+    setImportStatus('入力フォーマット (Excel) をダウンロードしました')
   }
   const doTemplateCSV = () => {
     exportTemplateCSV('健康記録_入力フォーマット.csv')
@@ -108,7 +108,7 @@ export default function ImportExport() {
             選択範囲に含まれる記録: {rangeEntries.length} 日分 <span className="opacity-60">/ 全記録 {Object.keys(state.entries).length} 日分</span>
           </div>
           <div className="flex flex-wrap gap-3">
-            <button className="btn btn-accent" onClick={doExcelSplit}>Excel シート分割</button>
+            <button className="btn btn-accent" onClick={doExcelSplit}>Excel</button>
             <button className="btn" onClick={doCSV}>CSV</button>
             <button className="btn btn-ghost" onClick={doPDF}>PDF</button>
             <button className="btn btn-ghost" onClick={doPrint}>印刷</button>
@@ -119,7 +119,7 @@ export default function ImportExport() {
         </div>
 
         <div className="mono text-[10px] text-muted tracking-wider2 leading-relaxed">
-          EXCEL シート分割は「症状記録」と「服薬記録・備考」の2シートで出力します。<br/>
+          EXCELは「症状記録」と「服薬記録・備考」の2シートで出力します。<br/>
           PDFはブラウザで描画した内容を画像化するため日本語の文字化けはありません。<br/>
           薬列はチェックを入れた服薬のみ出力されます（時刻のカンマ区切り）。<br/>
           チェックなしの服薬や、その日に1度もチェックされなかった薬は「—」で表示されます。
@@ -146,7 +146,7 @@ export default function ImportExport() {
               列名: <span className="text-ink">日付 / 症状名(程度) / 症状名(単位) / 薬:薬名 / 備考</span>
             </div>
             <div className="flex gap-3">
-              <button className="btn btn-ghost" onClick={doTemplateExcel}>Excel シート分割テンプレ</button>
+              <button className="btn btn-ghost" onClick={doTemplateExcel}>Excel テンプレ</button>
               <button className="btn btn-ghost" onClick={doTemplateCSV}>CSV テンプレ</button>
             </div>
           </div>
