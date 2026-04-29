@@ -6,14 +6,16 @@ import ListView from './components/ListView'
 import TrendChart from './components/TrendChart'
 import MedMaster from './components/MedMaster'
 import ImportExport from './components/ImportExport'
+import DataNotice from './components/DataNotice'
 
-type Tab = 'record' | 'history' | 'meds' | 'io'
+type Tab = 'record' | 'history' | 'meds' | 'io' | 'notice'
 
 const TABS: { id: Tab; num: string; label: string }[] = [
   { id: 'record',  num: '01', label: '記録'   },
   { id: 'history', num: '02', label: '履歴'   },
   { id: 'meds',    num: '03', label: '薬'     },
-  { id: 'io',      num: '04', label: '入出力' }
+  { id: 'io',      num: '04', label: '入出力' },
+  { id: 'notice',  num: '05', label: 'データの取り扱いについて' }
 ]
 
 export default function App() {
@@ -79,7 +81,7 @@ export default function App() {
           <div className="mincho text-[12px] text-muted leading-relaxed text-right">
             <div className="inline-block text-left">
               <div>データはこの端末のブラウザ内にのみ保存されます</div>
-              <div>詳細は「04・入出力」の「データの取り扱いについて」をご参照ください</div>
+              <div>詳細は「05・データの取り扱いについて」タブをご参照ください</div>
             </div>
           </div>
         </div>
@@ -97,8 +99,9 @@ export default function App() {
             </div>
           </div>
         )}
-        {tab === 'meds' && <MedMaster />}
-        {tab === 'io'   && <ImportExport />}
+        {tab === 'meds'   && <MedMaster />}
+        {tab === 'io'     && <ImportExport />}
+        {tab === 'notice' && <DataNotice />}
       </main>
 
       {/* ───────── Footer ───────── */}

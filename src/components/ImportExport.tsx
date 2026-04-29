@@ -64,28 +64,6 @@ export default function ImportExport() {
 
   return (
     <div className="grid grid-cols-12 gap-10">
-      {/* Notice */}
-      <div className="col-span-12">
-        <div className="card p-6">
-          <div className="mincho text-[16px] mb-3">データの取り扱いについて</div>
-          <div className="mincho text-[13px] leading-relaxed">
-            このアプリは、お使いのブラウザ内の記憶領域（ローカルストレージ）にデータを保存しています。
-          </div>
-          <div className="mincho text-[13px] leading-relaxed text-accent">
-            外部のサーバーには一切送信されません。
-          </div>
-          <div className="mincho text-[13px] leading-relaxed mt-3">
-            以下の場合はデータが失われる可能性がありますので、こまめにファイル出力でのバックアップを推奨します。
-          </div>
-          <ul className="mincho text-[13px] leading-relaxed list-disc pl-5 mt-2 space-y-1">
-            <li>ブラウザの「Cookie とサイトデータ」を削除したとき</li>
-            <li>プライベート／シークレットウィンドウで使用したとき</li>
-            <li>別のブラウザ／端末／ユーザーから開いたとき（データは共有されません）</li>
-            <li>ブラウザをアンインストールしたとき</li>
-          </ul>
-        </div>
-      </div>
-
       {/* Export */}
       <div className="col-span-7">
         <div className="flex items-baseline gap-4 mb-6 hair-b pb-4">
